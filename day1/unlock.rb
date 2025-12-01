@@ -26,8 +26,7 @@ class Unlock
       password += 1 if position == 0
     end
 
-    puts "Final position: #{position}"
-    puts "Password: #{password}"
+    puts "Final position: #{position}\nPassword: #{password}"
   end
 
   private
