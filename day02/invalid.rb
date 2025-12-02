@@ -18,13 +18,12 @@ class Invalid
         length = num_str.length
         is_invalid = false
 
-        (1..length / 2).each do |divisor|
-          next unless length % divisor == 0
+        (1..length / 2).each do |chunk|
+          next unless length % chunk == 0
           
           # Check if all chunks are identical
-          chunk_size = divisor
-          first_chunk = num_str[0, chunk_size]
-          is_invalid = (0...length).step(chunk_size).all? { |i| num_str[i, chunk_size] == first_chunk }
+          first_chunk = num_str[0, chunk]
+          is_invalid = (0...length).step(chunk).all? { |i| num_str[i, chunk] == first_chunk }
           
           if is_invalid
             invalid_nums << num
