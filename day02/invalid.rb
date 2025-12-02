@@ -12,18 +12,29 @@ class Invalid
       start_int, end_int = range.split("-").map(&:to_i)
 
       (start_int..end_int).each do |num|
+        next if num < 10 # Single digit numbers can't be invalid
+        
         num_str = num.to_s
         length = num_str.length
+        is_invalid = false
 
         (1..length / 2).each do |divisor|
           next unless length % divisor == 0
-          num_array = num_str.chars.each_slice(divisor).map(&:join).uniq
-          invalid_nums |= [num] if num_array.count == 1
+          
+          # Check if all chunks are identical
+          chunk_size = divisor
+          first_chunk = num_str[0, chunk_size]
+          is_invalid = (0...length).step(chunk_size).all? { |i| num_str[i, chunk_size] == first_chunk }
+          
+          if is_invalid
+            invalid_nums << num
+            break
+          end
         end
       end
       
       puts "#{range} has #{invalid_nums.count} invalid numbers" if log
-      puts "  #{invalid_nums.join(' and ')}" if log && invalid_nums.any?
+      puts "  #{invalid_nums.join(" and ")}" if log && invalid_nums.any?
       sum += invalid_nums.sum
     end
 
